@@ -12,24 +12,15 @@ else
    transicion = [-1 1];
 end
 valTrans = [ valTrans transicion];
-
+k = 2;
 for i = 2 : nbits
-    if bits(i) == 1
-       if arriba
-            transicion = [1 -1];
-            arriba = false;
-       else 
-            transicion = [-1 1];
-            arriba = true;
-       end    
-    else % Si hablamos del 0 le aplicamos transacción
-        if arriba == true 
-            transicion = [-1 1]; 
-        else
-            transicion = [1 -1];
-        end    
+    if bits(i) == 0
+        tran = [valTrans(k - 1) valTrans(k)];
+    else
+        tran = [valTrans(k) valTrans(k - 1)];
     end
-    valTrans = [ valTrans transicion];
+    k = k + 2;
+    valTrans = [ valTrans tran];
 end
 
 k = 1;
@@ -45,4 +36,5 @@ end
 
 plot(T,y)
 axis([0 nbits -2 2]);
+
 
