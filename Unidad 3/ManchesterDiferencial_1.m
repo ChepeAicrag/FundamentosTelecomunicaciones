@@ -9,7 +9,7 @@ if bits(1) == 0
    transicion = [-1 1];
    arriba = true;
 else 
-   transicion = [-1 1];
+   transicion = [1 -1];
 end
 valTrans = [ valTrans transicion];
 for i = 2 : nbits
