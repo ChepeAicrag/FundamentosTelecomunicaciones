@@ -3,7 +3,6 @@ clear all;
 %bits = [0 1 0 0 1 1 1 0];
 bits = [1 0 1 1 1 1 0 1 0 0 0 1 1 0 0];
 nbits = length(bits);
-arriba = false;
 valTrans = [];
 % Verificamos si hay transición al principio
 if bits(1) == 0
