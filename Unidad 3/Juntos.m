@@ -1,5 +1,5 @@
 function test()
-    bits = [0 1 0 0 1 1 1 0];
+    bits = [0 1 0 0 1 1 1 0]
     figure 
     title('Manchester');
     graficar(bits, Manchester(bits));
