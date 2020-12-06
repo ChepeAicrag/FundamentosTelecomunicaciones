@@ -41,7 +41,7 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
         function results = Manchester(app, bits) % Función para obtener transiciones de modulación Manchester
             valTrans = []; % Declaramos un vector de transiciones 
             for i = 1 : length( bits ) % Recorremos nuestro tren de bits
-                if bits( i ) == 0 % Verificamos si el bit actual es un 0
+                if bits(i) == 0 % Verificamos si el bit actual es un 0
                     transicion = [ 1 -1 ]; % Realizamos una transición de poisitivo a negativo
                 else % Nos indica que es un bit 1
                     transicion = [ -1 1 ]; % Realizamos una transición de negativo a positivo
@@ -53,7 +53,7 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
         
         function results = ManchesterDiferencial(app, bits) % Función para obtener transiciones de modulación Manchester Diferencial
             valTrans = []; % Declaramos un vector de los valores de la transición
-            if bits( 1 ) == 0  % Verificamos si el primer bit es 0
+            if bits(1) == 0  % Verificamos si el primer bit es 0
                 transicion = [ -1 1 ]; % Realizamos una transición de negativo a positivo
             else % Nos indica que el bit es un 1
                 transicion = [ 1 -1 ]; % Realizamos una transición de positivo a negativo
@@ -61,7 +61,7 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
             valTrans = [ valTrans transicion ]; % Agregamos a nuestra transición al vector de transiciones
             k = 2; % Declaramos una variable que nos permitirá obtener el ultimo valor de la transición 
             for i = 2 : length(bits) % Recorremos nuestro trend e bits
-                if bits( i ) == 0 % Si el bit actual es 0
+                if bits(i) == 0 % Si el bit actual es 0
                     tran = [ valTrans( k - 1 ) valTrans( k ) ]; % Invertimos la transición del bit anterior y es nuestra transicion
                 else % Nos indica que el bit actual es 1
                     tran = [ valTrans( k ) valTrans( k - 1 ) ]; % No hay transición y realizamos la misma que el bit anterior
@@ -69,7 +69,7 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
                 k = k + 2; % Incrementos nuestra variable
                 valTrans = [ valTrans tran ]; % Agregamos la transición al vector de transiciones
             end
-            graficar( app, 0, length( bits ), valTrans ); % Graficamos mediante nuestra función para graficar
+            graficar(app, 0, length(bits), valTrans); % Graficamos mediante nuestra función para graficar
         end
     end % Fin de nuestra función Manchester Diferencial
     
@@ -80,17 +80,17 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
         % Button pushed function: BtnGraficar
         function BtnGraficarButtonPushed(app, event)
             entrada_tren = app.TrendebitsEditField.Value; % Obtenemos el tren de bits como string
-            bits = str2num( entrada_tren ); % Mapeamos ese tren de bits de string a una matriz de 1 y 0
+            bits = str2num(entrada_tren); % Mapeamos ese tren de bits de string a una matriz de 1 y 0
             op = app.SelMod.Value; % Obtenemos que modulación aplicar
-            BtnBorrarButtonPushed( app, event ); % Borramos todos los campos
+            BtnBorrarButtonPushed(app, event); % Borramos todos los campos
             app.TrendebitsEditField.Value = entrada_tren; % Colocamos nuestros campo de tren de bits                    
-            if strcmpi( op, 'Manchester' ) % Verificamos si aplicaremos Manchester 
-                Manchester( app, bits ); % Ejecutamos la modulación de Manchester
-            elseif strcmpi( op,'Ambas' ) % Verificamos si aplicaremos ambas modulaciones
-                ManchesterDiferencial( app, bits ); % Ejecutamos la modulación de Manchester Diferencial
-                Manchester( app, bits ); % Ejecutamos la modulación de Manchester
+            if strcmpi(op,'Manchester') % Verificamos si aplicaremos Manchester 
+                Manchester(app, bits); % Ejecutamos la modulación de Manchester
+            elseif strcmpi(op,'Ambas') % Verificamos si aplicaremos ambas modulaciones
+                ManchesterDiferencial(app, bits); % Ejecutamos la modulación de Manchester Diferencial
+                Manchester(app, bits); % Ejecutamos la modulación de Manchester
             else % Si no fue ninguna de las anteriores, entonces es la Manchester Diferencial
-                ManchesterDiferencial( app, bits ); % Ejecutamos la modulación de Manchester Diferencial
+                ManchesterDiferencial(app, bits); % Ejecutamos la modulación de Manchester Diferencial
             end
         end % Fin de la función para el botón Graficar
 
@@ -98,9 +98,9 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
         function BtnBorrarButtonPushed(app, event)
             app.TrendebitsEditField.Value = ' '; % Limpiamos el campo de tren de bits
             app.GraficaM.clo; % Limpiamos la grafica de Manchester 
-            axis( app.GraficaM, [ 0 1 0 1 ] ); % Asignamos los ejes a la grafica de M
+            axis(app.GraficaM, [0 1 0 1]); % Asignamos los ejes a la grafica de M
             app.GraficaMD.clo; % Limpiamos la grafica de Manchester Diferencial
-            axis( app.GraficaMD, [ 0 1 0 1 ]); % Asignamos los ejes a la grafica de MD
+            axis(app.GraficaMD, [0 1 0 1]); % Asignamos los ejes a la grafica de MD
         end % Fin de la función para el botón de Borrar
     end 
 
