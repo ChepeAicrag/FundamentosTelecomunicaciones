@@ -4,6 +4,7 @@
  * @version: 19/12/2020
  *
  * */
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class ProgramaUnidad {
@@ -25,7 +26,7 @@ public class ProgramaUnidad {
         System.out.println("\n" + getBitsTransmitidos() + " bps = " + getMaxCaracter()
                 + " tramas/segundo x " + (8 * numEstaciones + 1) + " bits/trama"); // Información de la tasa de datos
         System.out.println("Número de bits transmitidos: " + getBitsTransmitidos()); // Información de bits transmitidos
-        System.out.println("Número de bits utiles transmitidos: " + getBitsUtiles()); // Información de bits utiles
+        System.out.println("Número de bits útiles transmitidos: " + getBitsUtiles()); // Información de bits utiles
     }
 
     /**

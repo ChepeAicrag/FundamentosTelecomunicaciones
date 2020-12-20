@@ -62,9 +62,9 @@ classdef GarciaGarciaJoseAngel_TrabajoUnidad3 < matlab.apps.AppBase
             k = 2; % Declaramos una variable que nos permitirá obtener el ultimo valor de la transición 
             for i = 2 : length(bits) % Recorremos nuestro trend e bits
                 if bits( i ) == 0 % Si el bit actual es 0
-                    tran = [ valTrans( k - 1 ) valTrans( k ) ]; % Invertimos la transición del bit anterior y es nuestra transicion
+                    tran = [ valTrans( k - 1 ) valTrans( k ) ]; % Mantenemos la transición del bit anterior
                 else % Nos indica que el bit actual es 1
-                    tran = [ valTrans( k ) valTrans( k - 1 ) ]; % No hay transición y realizamos la misma que el bit anterior
+                    tran = [ valTrans( k ) valTrans( k - 1 ) ]; % No hay transición y realizamos la inversión de la transición del bit anterior
                 end
                 k = k + 2; % Incrementos nuestra variable
                 valTrans = [ valTrans tran ]; % Agregamos la transición al vector de transiciones
