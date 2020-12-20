@@ -21,29 +21,22 @@ public class ProgramaUnidad {
         crearEstaciones(); // Creamos las estaciones
         rellenarEstaciones(); // Rellenamos las estaciones
         mostrarTrama(); // Obtenemos y mostramos la trama
-
-        System.out.println(getBitsTransmitidos() + " = " + getMaxCaracter()
-                + " tramas/segundo x " + (8 * numEstaciones + 1) + " bits/trama");
-
-        System.out.println(getBitsTransmitidos() + " = " + numEstaciones + " x " + getBitsUtiles()
-                + " bps + " + (getBitsTransmitidos() - getBitsUtiles()) + " bps de sincronización");
-
-        System.out.println("\nNúmero de bits transmitidos: " + getBitsTransmitidos()); // Información de bits transmitidos
+        System.out.println("\nINFORMACIÓN: ");
+        System.out.println("\n" + getBitsTransmitidos() + " bps = " + getMaxCaracter()
+                + " tramas/segundo x " + (8 * numEstaciones + 1) + " bits/trama"); // Información de la tasa de datos
+        System.out.println("Número de bits transmitidos: " + getBitsTransmitidos()); // Información de bits transmitidos
         System.out.println("Número de bits utiles transmitidos: " + getBitsUtiles()); // Información de bits utiles
-
-
-
     }
 
     /**
      * Crear las estaciones con su respectivo número de caracteres a transmitir
      * */
     public static void crearEstaciones(){
-        estaciones = new ArrayList<>(numEstaciones);
+        estaciones = new ArrayList<>(numEstaciones); // Crea el array para almacenar las estaciones
         System.out.println("\n************************************************************\n");
         for(int i = 1; i <= numEstaciones; i++) {
             System.out.print("Cantidad de caracteres a transmitir la estación [" + i + "] = ");
-            estaciones.add(new Estacion(sc.nextInt(), i));
+            estaciones.add(new Estacion(sc.nextInt(), i));  // Crea la estación y la Agrega a estaciones
         }
         System.out.println("\n************************************************************\n");
     }
@@ -54,10 +47,11 @@ public class ProgramaUnidad {
      * */
     public static String generarTrama(){
         String tramas = "", trama = "";
+        int bit_tramado = 1;
         for(int t = getMaxCaracter() - 1; t >= 0; t--){
             trama = "[";
             for(int i = numEstaciones - 1; i >= 0; i--){
-                ArrayList<Character> datos = estaciones.get(i).getData(); // Obtenemos e caracter de la estación
+                ArrayList<String> datos = estaciones.get(i).getData(); // Obtenemos los caracteres de la estación
                 try {
                     trama += " " + datos.get(t) + " |"; // Lo colocamos en la trama si es que tiene
                 }catch (Exception error){
@@ -65,7 +59,7 @@ public class ProgramaUnidad {
                 }
             }
             trama = trama.substring(0 ,trama.length() - 1); // Quitar el | al final de cada trama
-            tramas += trama + "] --- "; // Concatenamos a las tramas
+            tramas += trama + "] [" + (bit_tramado = Math.abs(bit_tramado - 1)) + "] --- "; // Concatenamos a las tramas y su bit de tramado
         }
         return tramas;
     }
@@ -74,7 +68,7 @@ public class ProgramaUnidad {
      * Permite mostrar la trama generado con un separador
      * */
     public static void mostrarTrama(){
-        System.out.println("TRAMA GENERADA: \n");
+        System.out.println("\nTRAMA GENERADA: \n");
         String trama = generarTrama(); // Generamos la trama
         for(int i = 0; i < trama.length(); i++)
             System.out.printf("*");
@@ -95,11 +89,11 @@ public class ProgramaUnidad {
      * Calcula y devuelve los bits que se han transmitido
      * */
     public static int getBitsTransmitidos(){
-        return getBitsUtiles() + (8 * numEstaciones);
+        return getMaxCaracter() * numEstaciones * 8 + getMaxCaracter();
     }
 
     /**
-     * Calcula y devuelve los bits transmitidos los que son utiles
+     * Calcula y devuelve los bits transmitidos que son utiles
      * */
     public static int getBitsUtiles(){
         return  estaciones.stream().mapToInt(Estacion::getBits).sum();
@@ -118,7 +112,7 @@ public class ProgramaUnidad {
  * */
 class Estacion{
 
-    private ArrayList<Character> data; // Información que transmite
+    private ArrayList<String> data; // Información que transmite
     private int bits, // Cantidad de bits que transmite
                 numCaracter, // Número de caracteres de la estacion
                 id; // Identificador
@@ -134,15 +128,21 @@ class Estacion{
     }
 
     /**
-     * Permite agregar un caracter a transmitir a la estación
+     * Permite agregar los caracteres a la estación
      * */
     public void addCaracters(){
-        Scanner sc = new Scanner(System.in);
+        String [] abecedario = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R",
+                "S", "T", "U", "V", "W", "X", "Y", "Z" }; // Caracteres para cada estación
         System.out.println("Caracteres de Estación " + id);
+        String datos = "[" ;
         for(int i = 0; i < numCaracter; i++){
-            System.out.printf("Caracter [" + (i + 1) + "] = ");
-            data.add(new Character(sc.next().charAt(0)));
+            String c = id <= abecedario.length ? abecedario[id - 1]
+                    : abecedario[id - abecedario.length - 1] + id / abecedario.length + 1; // Calcula el caracter de acuerdo a la estación
+            datos += " " + c; // Agrega a la cadena para mostrar los datos
+            data.add(c); // Agrega el caracter a los datos de la estación
         }
+        datos += " ]";
+        System.out.println(datos);
         System.out.println("-------------------------------------");
     }
 
@@ -163,7 +163,7 @@ class Estacion{
     /**
      * Devuelve el array de caracteres que envía la estación
      * */
-    public ArrayList<Character> getData(){
+    public ArrayList<String> getData(){
         return data;
     }
 }
