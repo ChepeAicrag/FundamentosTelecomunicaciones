@@ -5,9 +5,6 @@
  *
  * */
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
-import java.nio.charset.CharacterCodingException;
 import java.util.*;
 
 public class ProgramaUnidad {
@@ -24,10 +21,19 @@ public class ProgramaUnidad {
         //numEstaciones = sc.nextInt(); // Lectura del número de estaciones
         //crearEstaciones(); // Creamos las estaciones
 
-
-        test();
-        //test2();
-
+        int op = sc.nextInt();
+        switch (op) {
+            case 1:
+            test();break;
+            case 2:
+            test2();break;
+            case 3:
+            test3();
+                break;
+            case  4:
+            test4();
+            break;
+        }
         //rellenarEstaciones(); // Rellenamos las estaciones
         mostrarDatos(); // Muestra los datos que se enviarán
         mostrarTramas(); // Obtenemos y mostramos la trama
@@ -208,7 +214,7 @@ public class ProgramaUnidad {
         return tramas;
     }
     /**
-     *
+     * Verifica si las Queue tienen datos o ya no
      */
     public static boolean hayTodavia(ArrayList<Queue<Character>> datos){
         for(Queue<Character> d : datos)
@@ -225,11 +231,9 @@ public class ProgramaUnidad {
         int bit_tramado = 1,
             numRanuras = getNumRanurasTiempoAsincrona(),
             numTramas = getNumTramasAsincrono(); // Este será dinamico y generico
-
         ArrayList<Queue<Character>> caracteres = new ArrayList<>();
         for(int i = 0; i < numEstaciones; i++)
             caracteres.add(new LinkedList<>(estaciones.get(i).getData()));
-
         StringBuilder tmpTrama = new StringBuilder();
         int index = 0;
         while(hayTodavia(caracteres)){
@@ -246,14 +250,15 @@ public class ProgramaUnidad {
             tramas.append(" | " + tmpTrama.charAt(i+1) + "" + tmpTrama.charAt(i));
             aux += 1;
             if(aux == numRanuras && numTramas != 0){
-                tramas.append(" [ ---- ]" + (bit_tramado = Math.abs(bit_tramado - 1)) + "[" );
+                if(i < tmpTrama.length() - 2)
+                    tramas.append(" [ ---- ]" + (bit_tramado = Math.abs(bit_tramado - 1)) + "[" );
                 aux = 0;
                 numTramas--;
-            }else if(numTramas == 0 && i == tmpTrama.length() - 2){
-                tramas.append(" [");
             }
+            if(i == tmpTrama.length() - 2)
+                tramas.append(" [");
+            System.out.println(tramas);
         }
-
         return tramas.reverse().toString().replace("|  ]", "]");
     }
 
