@@ -25,7 +25,7 @@ public class ProgramaUnidad {
         //crearEstaciones(); // Creamos las estaciones
 
 
-        test4();
+        test();
         //test2();
 
         //rellenarEstaciones(); // Rellenamos las estaciones
@@ -222,39 +222,39 @@ public class ProgramaUnidad {
      * */
     public static String generarTramaAsincrona(){
         StringBuilder tramas = new StringBuilder();
-        String trama = "";
-        int bit_tramado = 0, numRanuras = getNumRanurasTiempoAsincrona();
-        int numTramas = getNumTramasAsincrono(); // Este será dinamico y generico
+        int bit_tramado = 1,
+            numRanuras = getNumRanurasTiempoAsincrona(),
+            numTramas = getNumTramasAsincrono(); // Este será dinamico y generico
 
         ArrayList<Queue<Character>> caracteres = new ArrayList<>();
         for(int i = 0; i < numEstaciones; i++)
             caracteres.add(new LinkedList<>(estaciones.get(i).getData()));
-        StringBuilder testeo = new StringBuilder();
 
+        StringBuilder tmpTrama = new StringBuilder();
         int index = 0;
         while(hayTodavia(caracteres)){
             index = index >= numEstaciones ? 0 : index;
             try {
                 Queue<Character> datos = caracteres.get(index++);
-                testeo.append(datos.remove().toString() + (index));
+                tmpTrama.append(datos.remove().toString() + (index));
             }catch (Exception e){}
         }
-        for(int i = 0, aux = 0; i < testeo.length() - 1; i+=2){
+        tramas.append("]1[");
+        for(int i = 0, aux = 0; i < tmpTrama.length() - 1; i+=2){
             if(aux == 0)
-                tramas.append("[ ");
-            tramas.append(testeo.charAt(i) + "" + testeo.charAt(i+1) + " | ");
+                tramas.append("] ");
+            tramas.append(" | " + tmpTrama.charAt(i+1) + "" + tmpTrama.charAt(i));
             aux += 1;
             if(aux == numRanuras && numTramas != 0){
-                tramas.delete(tramas.length() - 2,tramas.length());
-                tramas.append("] [0] --- ");
+                tramas.append(" [ ---- ]" + (bit_tramado = Math.abs(bit_tramado - 1)) + "[" );
                 aux = 0;
                 numTramas--;
-            }else if(numTramas == 0 && i == testeo.length() - 2){
-                tramas.delete(tramas.length() - 2,tramas.length());
-                tramas.append("] [0] --- ");
+            }else if(numTramas == 0 && i == tmpTrama.length() - 2){
+                tramas.append(" [");
             }
         }
-        return tramas.toString();
+
+        return tramas.reverse().toString().replace("|  ]", "]");
     }
 
     /**
@@ -452,95 +452,3 @@ class Estacion{
         System.out.printf(info + "] --> DE LA FORMA --> [" + info.reverse() + " ]\n");
     }
 }
-
-
-
-/**
- *         String tramas = "", trama = "";
- *         int bit_tramado = 1, numRanuras = getNumRanurasTiempoAsincrona() , t = getNumTramasAsincrono(), rodaja = 0;
- *         System.out.println("El número de tramas es >>>" + t);
- *         System.out.println("El número de rodajas es >>>" + numRanuras);
- *         for(t = getNumTramasAsincrono() - 1; t >= 0; t--){
- *             trama = "[";
- *             for(int i = numEstaciones - 1; i >= 0; i--){
- *                     Estacion estacion = estaciones.get(i);
- *                     ArrayList<Character> datos = estacion.getData(); // Obtenemos los caracteres de la estación
- *                     try {
- *                         int direccion = estacion.getId(); // Para indicar el direccionamiento
- *                         trama += " " + datos.get(t) + direccion + " |"; // Lo colocamos en la trama si es que tiene
- *                         if (numRanuras < datos.size() && t == getNumTramasAsincrono()-1)
- *                             trama += " " + datos.get(t + 1) + direccion + " |"; // Le coloca su otro dato porque ya es la ultima trama
- *                         rodaja += 1;
- *                         if(rodaja == numRanuras)
- *                             break;
- *                     } catch (Exception error) {}
- *             }
- *             trama = trama.substring(0 ,trama.length() - 1); // Quitar el | al final de cada trama
- *             tramas += trama + "] [" + (bit_tramado = Math.abs(bit_tramado - 1)) + "] --- "; // Concatenamos a las tramas y su bit de tramado
- *         }
- *         return tramas;
- * */
-
-
-/**
- * StringBuilder tramas = new StringBuilder();
- *         String trama = "";
- *         int bit_tramado = 1;
- *         int index = 0, numRanuras = getNumRanurasTiempoAsincrona(), rodajas = 0;
- *         int numTramas = 0;
- *         int k = 0; // Pära el número de estación;
- *         System.out.println("El número de tramas es " + getNumTramasAsincrono());
- *         System.out.println("El número de ranuras: " + getNumRanurasTiempoAsincrona());
- *         System.out.println("El número de caracteres: "  + getNumCaracteresTotales());
- *         int finish = getNumTramasAsincrono() + 1;
- *         while (numTramas < finish && index == getMaxCaracter()){
- *             if(rodajas == 0)
- *                 trama = "[ "; // Inicio de trama;
- *             try {
- *                 ArrayList<Character> datos = estaciones.get(k).getData();
- *                 if(!datos.isEmpty()){
- *                     trama += datos.get(index).toString() + estaciones.get(k).getId() + " | ";
- *                     rodajas += 1;
- *                     trama = trama.substring(0 ,trama.length() - 1); // Quitar el | al final de cada trama
- *                     if(rodajas == numRanuras || index == finish - 1){
- *                         tramas.append(trama + "] [" + (bit_tramado = Math.abs(bit_tramado - 1)) + "] --- "); // Concatenamos a las tramas y su bit de tramado
- *                         System.out.println(tramas);
- *                         rodajas = 0;
- *                         numTramas += 1;
- *                         index++;
- *                     }
- *                 }
- *                 k++;
- *                 index = index == getMaxCaracter() ? 0 : index;
- *                 k = k == numEstaciones ? 0 : k;
- *                 System.out.println(index + " <<<< " + k);
- *             }catch (Exception error){}
- *         }
- *         return tramas.toString();
- * */
-
-
-/**
- *
- *         for(int index = 0; index < getMaxCaracter() - 1; index++){
- *             trama = "]";
- *             int rodajas = 0;
- *             while(rodajas < numRanuras){
- *                 try {
- *                     ArrayList<Character> datos = estaciones.get(i).getData();
- *                     trama +=  " | " + estaciones.get(i).getId() + datos.get(index).toString();
- *                     rodajas += 1;
- *                     if(index == getMaxCaracter() - 2 && rodajas == numRanuras - 1)
- *                         trama +=  " | " + estaciones.get(i).getId() + datos.get(index + 1).toString();
- *                     i++;
- *                 }catch (Exception e){
- *                         i++;
- *                 }
- *             }
- *             System.out.println(trama);
- *             trama = trama.substring(4,trama.length()); // Quitar el | al final de cada trama
- *             System.out.println(trama);
- *             tramas.append(" --- ] " + (bit_tramado = Math.abs(bit_tramado - 1)) + " [ ] " + trama + " [ " ); // Concatenamos a las tramas y su bit de tramado
- *             i = i == numEstaciones ? 0 : i;
- *         }
- * */
