@@ -51,7 +51,7 @@ public class ProgramaUnidad {
      * */
     public static String generarTramaSincrona(){
         String tramas = "", trama = ""; // Variables para almacenar todas las tramas y cada trama
-        int bit_tramado = 0; // Para indicar el bit de tramado
+        int bit_tramado = 1; // Para indicar el bit de tramado
         for(int t = getMaxCaracter() - 1; t >= 0; t--){
             trama = "["; // Indica el inicio de una trama
             for(int i = numEstaciones - 1; i >= 0; i--){
@@ -95,8 +95,8 @@ public class ProgramaUnidad {
     public static String generarTramaAsincrona(){
         StringBuilder tramas = new StringBuilder(); // Almacena las tramas
         int bit_tramado = 1, // Para indicar el bit de tramado
-            numRanuras = getNumRanurasTiempoAsincrona(), // Para saber en cuantas ranuras partir la trama
-            numTramas = getNumTramasAsincrona(); // El número de tramas a generar
+                numRanuras = getNumRanurasTiempoAsincrona(), // Para saber en cuantas ranuras partir la trama
+                numTramas = getNumTramasAsincrona(); // El número de tramas a generar
         ArrayList<Queue<Character>> caracteres = new ArrayList<>(); // Contiene todos los caracteres que se envían
         for(int i = 0; i < numEstaciones; i++)
             caracteres.add(new LinkedList<>(estaciones.get(i).getData()));
@@ -125,7 +125,7 @@ public class ProgramaUnidad {
         StringBuilder nuevo = new StringBuilder(tramas.reverse().toString().replace("|  ]", "]"));
         int faltante = getNumTramasAsincrona() * numRanuras - getNumCaracteresTotales() ;
         for(int i = 1; i <= faltante; i++)
-            nuevo.insert(i*2,"_ ");
+            nuevo.insert(i * 2,"_ ");
         return nuevo.toString(); // Regresa las tramas
     }
 
@@ -156,8 +156,6 @@ public class ProgramaUnidad {
         int caracteres = getNumCaracteresTotales(),
                 ranuras = getNumRanurasTiempoAsincrona();
         return (int)Math.ceil((double)caracteres / ranuras);
-        //double tramas = (double)caracteres / ranuras;
-        //return String.valueOf(tramas).contains(".5") ? (int)(tramas + 0.5) : (int)tramas;
     }
 
     /**
@@ -179,7 +177,7 @@ public class ProgramaUnidad {
      * */
     public static int getBitsDireccionamiento(){
         return 2;
-       //return toBinary(numEstaciones).length();
+        //return toBinary(numEstaciones).length();
     }
 
     /**
@@ -201,8 +199,7 @@ public class ProgramaUnidad {
      * Calcula y retorna los bits transmitidos que son utiles en TDM Asincrona
      * */
     public static int getBitsUtilesAsincrona(){
-        return  getBitsTransmitidosAsincrona() - (getBitsDireccionamiento() * ( 8 +
-                getNumTramasAsincrona() * getNumRanurasTiempoAsincrona()) + getNumTramasAsincrona());
+        return  getBitsUtilesSincrona();
     }
 
     /**
@@ -214,7 +211,7 @@ public class ProgramaUnidad {
         decoracion(trama);
         System.out.println("\n\n" + trama + "\n"); // Mostramos la tramas sincrona
         decoracion(trama);
-        System.out.println("\n\nINFORMACIÓN  DE TDM SINCRONA: ");
+        System.out.println("\n\nINFORMACIÓN DE TDM SINCRONA: ");
         System.out.println("\n" + getBitsTransmitidosSincrona() + " bps = " + getMaxCaracter()
                 + " tramas/segundo x " + (8 * numEstaciones + 1) + " bits/trama"); // Información de la tasa de datos
         System.out.println("Número de bits transmitidos: " + getBitsTransmitidosSincrona()); // Información de bits transmitidos
@@ -243,7 +240,7 @@ public class ProgramaUnidad {
      * Muestra los datos que envía cada estación, ejectuando el respectivo método de la estación
      * */
     public static void mostrarDatos(){
-        System.out.println("\n DATOS DE CADA ESTACIÓN");
+        System.out.println("\nDATOS DE CADA ESTACIÓN");
         estaciones.stream().forEach(e -> e.imprimirDatos());
     }
 
@@ -256,8 +253,8 @@ class Estacion{
 
     private ArrayList<Character> data; // Información que transmite
     private int bits, // Cantidad de bits que transmite
-                numCaracter, // Número de caracteres de la estacion
-                id; // Identificador
+            numCaracter, // Número de caracteres de la estacion
+            id; // Identificador
 
     /**
      * Constructor de una estación
@@ -307,9 +304,9 @@ class Estacion{
      * Imprime los datos que envía y como los envía la estación (orden)
      * */
     public void imprimirDatos(){
-        System.out.printf("ESTACIÓN " + id + " --> ENVÍA --> [ ");
+        System.out.printf("ESTACIÓN " + id + " --> ENVÍA --> [");
         StringBuilder info = new StringBuilder();
         data.forEach(e -> info.append(e.toString()+ " "));
-        System.out.printf(info + "] --> DE LA FORMA --> [" + info.reverse() + " ]\n");
+        System.out.printf(info + " ] --> DE LA FORMA --> [" + info.reverse() + " ]\n");
     }
 }
