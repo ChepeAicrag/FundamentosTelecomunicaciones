@@ -17,48 +17,14 @@ public class ProgramaUnidad {
      * Función principal del programa para ejecutar todos las fucniones
      * */
     public static void main(String[] args) {
-        //System.out.print("Introduce el numero de estaciones: ");
-        //numEstaciones = sc.nextInt(); // Lectura del número de estaciones
-        //crearEstaciones(); // Creación de las estaciones
-        //rellenarEstaciones(); // Relleno de las estaciones
-        test2();
+        System.out.print("Introduce el numero de estaciones: ");
+        numEstaciones = sc.nextInt(); // Lectura del número de estaciones
+        crearEstaciones(); // Creación de las estaciones
+        rellenarEstaciones(); // Relleno de las estaciones
         mostrarDatos(); // Muestra los datos que se envíarán por cada estación
         mostrarTramas(); // Obtiene y muestra las tramas
     }
 
-    public static void test2(){
-        numEstaciones = 4;
-
-        estaciones = new ArrayList<>(numEstaciones);
-
-        estaciones.add(new Estacion(7, 1));  // Crea la estación y la Agrega a estaciones
-        estaciones.add(new Estacion(4, 2));  // Crea la estación y la Agrega a estaciones
-        estaciones.add(new Estacion(3, 3));  // Crea la estación y la Agrega a estaciones
-        estaciones.add(new Estacion(5, 4));  // Crea la estación y la Agrega a estaciones
-
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-        estaciones.get(0).getData().add('A');
-
-        estaciones.get(1).getData().add('B');
-        estaciones.get(1).getData().add('B');
-        estaciones.get(1).getData().add('B');
-        estaciones.get(1).getData().add('B');
-
-        estaciones.get(2).getData().add('C');
-        estaciones.get(2).getData().add('C');
-        estaciones.get(2).getData().add('C');
-
-        estaciones.get(3).getData().add('D');
-        estaciones.get(3).getData().add('D');
-        estaciones.get(3).getData().add('D');
-        estaciones.get(3).getData().add('D');
-        estaciones.get(3).getData().add('D');
-    }
     /**
      * Crea las estaciones con su respectivo número de caracteres a transmitir
      * */
@@ -154,9 +120,13 @@ public class ProgramaUnidad {
                 aux = 0; // Reinicia las ranuras hechas
                 numTramas--; // Decrementa las tramas, indicando que se completó una
             }
-            tramas.append(i == tmpTrama.length() - 2 ? " [" : ""); // Cierra la trama recien calculada y la agrega a tramas
+            tramas.append(i == tmpTrama.length() - 2 ? " [" : ""); // Cierra la última trama recien calculada y la agrega a tramas
         }
-        return tramas.reverse().toString().replace("|  ]", "]"); // Regresa las tramas
+        StringBuilder nuevo = new StringBuilder(tramas.reverse().toString().replace("|  ]", "]"));
+        int faltante = getNumTramasAsincrona() * numRanuras - getNumCaracteresTotales() ;
+        for(int i = 1; i <= faltante; i++)
+            nuevo.insert(i*2,"_ ");
+        return nuevo.toString(); // Regresa las tramas
     }
 
     /**
@@ -208,7 +178,8 @@ public class ProgramaUnidad {
      * Calcula y retorna el número de bits para direccionamiento de acuerdo a las estaciones para el TDM Asincrona
      * */
     public static int getBitsDireccionamiento(){
-        return toBinary(numEstaciones).length() - 1;
+        return 2;
+       //return toBinary(numEstaciones).length();
     }
 
     /**
