@@ -1,4 +1,4 @@
-# FundamentosTelecomunicaciones
+# Fundamentos De Telecomunicaciones
 ----
 Programas de la asignatura de Fundamentos de Telecomunicaciones impartido por la M.C. Reyna Valverde Jarquín. 
 ____
