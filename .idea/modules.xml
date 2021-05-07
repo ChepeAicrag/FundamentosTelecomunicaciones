@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FundamentosTelecomunicaciones.iml" filepath="$PROJECT_DIR$/.idea/FundamentosTelecomunicaciones.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Unidad2/Unidad2.iml" filepath="$PROJECT_DIR$/Unidad2/Unidad2.iml" />
-    </modules>
-  </component>
-</project>
